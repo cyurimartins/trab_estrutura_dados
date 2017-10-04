@@ -43,12 +43,16 @@ int main(){
 
         switch (opcao){
             //cliente
-            case 1:
-                opc = menu2();
+            
+            
+            
+            case 1: 
+				opc = menu2();            
 
                 //inserir cliente
                 if (opc == 1){
-                    inserirElemento(&l1);
+                    inserirElemento(&l1);                	
+                	break;
                 }
                 //exluir cliente
                 if (opc == 2){
@@ -66,10 +70,11 @@ int main(){
                 if (opc == 5){
                     menu();
                 }
+            break;
 
             //produto
-            case 2:
-                opc = menu2();
+            case 2: 
+				opc = menu2();            
 
                 //inserir produto
                 if (opc == 1){
@@ -87,6 +92,7 @@ int main(){
                 if (opc == 5){
                     menu();
                 }
+            break;
 
             //vender
             case 3:
