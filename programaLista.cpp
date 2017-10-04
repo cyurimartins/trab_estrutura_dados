@@ -17,6 +17,11 @@ typedef struct Lista{
     TElemento *fim;
 }TLista;
 
+typedef struct Lista2{
+    TElemento *inicio;
+    TElemento *fim;
+}TLista2;
+
 /* Prototipando funcoes */
 int menu();
 int menu2();
@@ -26,15 +31,19 @@ int inserirElemento(TLista *lista);
 void excluirElemento(TLista *lista);
 void consultarElementos(TLista *lista);
 
-int inserirProduto(TLista *lista);
-
+void inicializaProduto(TLista2 *lista2);
+int inserirProduto(TLista2 *lista2);
+void excluirProduto(TLista2 *lista2);
+void consultarProduto(TLista2 *lista2);
 
 int main(){
     int opcao;
     int opc;
     TLista l1;
+    TLista2 l2;
 
     inicializaLista(&l1);
+    inicializaProduto(&l2);
 
     do {
 
@@ -42,9 +51,7 @@ int main(){
     opcao = menu();
 
         switch (opcao){
-            //cliente
-            
-            
+            //cliente      
             
             case 1: 
 				opc = menu2();            
@@ -78,16 +85,16 @@ int main(){
 
                 //inserir produto
                 if (opc == 1){
-                    inserirProduto(&l1);
+                    inserirProduto(&l2);
                 }
                 if (opc == 2){
-                    excluirElemento(&l1);
+                    excluirProduto(&l2);
                 }
                 if (opc == 3){
                     //alterar produto
                 }
                 if (opc == 4){
-                    consultarElementos(&l1);
+                    consultarProduto(&l2);
                 }
                 if (opc == 5){
                     menu();
@@ -228,28 +235,96 @@ void consultarElementos(TLista *lista){
     }
 }
 
-// inserir produto na lista
+/* LISTA 2 */ 
 
-int inserirProduto(TLista *lista){
+// iNICIALIZAR LISTA2
+
+void inicializaProduto(TLista2 *lista2){
+    lista2->inicio = NULL;
+    lista2->fim = NULL;
+}
+
+/* inserir Elemento na lista2 */
+
+int inserirProduto(TLista2 *lista2){
     system("cls");
     TElemento *novo;
     novo = new TElemento;
 
-    cout << "Inserir codigo do produto: ";
-    cin >> novo->cod;
-    cout << "Informe o nome do produto: ";
-    cin >> novo->nome;
-    cout << "Preco do produto: ";
-    cin >> novo->preco;
+    cout << "Inserir codigo: ";
+    cin >>novo->cod;
+    cout << "Informe o nome: ";
+    cin >>novo->nome;
 
     system("cls");
     novo->prox = NULL;
-
-    if (lista->inicio == NULL){
-        lista->inicio = novo;
-        lista->fim = novo;
+    
+    if (lista2->inicio == NULL){
+        lista2->inicio = novo;
+        lista2->fim = novo;
     }else{
-        lista->fim->prox = novo; //encadeamento da lista
-        lista->fim = novo;
+        lista2->fim->prox = novo; //encadeamento da lista
+        lista2->fim = novo;
+    }
+}
+
+/* Excluir elemento da lista2 */
+
+void excluirProduto(TLista2 *lista2){
+    system("cls");
+    int valor;
+    TElemento *anterior, *atual;
+
+    cout << "Informe elemento a ser excluido: ";
+    cin >> valor;
+
+    if (lista2->inicio == NULL){
+        cout << "Lista Vazia!\n\n";
+    }else{
+        anterior = lista2->inicio;
+        atual = lista2->inicio;
+        while (atual!= NULL){
+            if (atual->cod == valor){
+                if (atual == lista2->inicio){
+                    lista2->inicio = lista2->inicio->prox;
+                    free(atual);
+                    break;
+                }
+                else{
+                    if (atual == lista2->fim){
+                        lista2->fim = anterior;
+                    }
+
+                    //refazendo o encadeamento
+                    anterior->prox = atual->prox;
+                    free(atual);
+                    break;
+                }
+            }
+            else{
+                anterior = atual;
+                atual = atual->prox;
+            }
+        }//fim while
+    }
+}
+
+/* Consultar Lista2 */
+
+void consultarProduto(TLista2 *lista2){
+    system("cls");
+    TElemento *aux;
+    aux = lista2->inicio;
+
+    if (aux == NULL){
+        cout << "\n\nLista Vazia";
+    }
+    else{
+        while (aux != NULL){
+            cout <<"Cod: "<<aux->cod<<endl;
+            cout <<"Nome: "<<aux->nome<<endl;
+
+            aux = aux->prox;
+        }
     }
 }
