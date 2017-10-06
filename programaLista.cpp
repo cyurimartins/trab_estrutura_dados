@@ -15,6 +15,7 @@ typedef struct Elemento{
 typedef struct Lista{
     TElemento *inicio;
     TElemento *fim;
+    TElemento *prox;
 }TLista;
 
 typedef struct Lista2{
@@ -35,6 +36,8 @@ void inicializaProduto(TLista2 *lista2);
 int inserirProduto(TLista2 *lista2);
 void excluirProduto(TLista2 *lista2);
 void consultarProduto(TLista2 *lista2);
+
+int VenderProduto(TLista2 *lista2);
 
 int main(){
     int opcao;
@@ -103,7 +106,7 @@ int main(){
 
             //vender
             case 3:
-                break;
+            	VenderProduto(&l2);                
             //calcular total
             case 4:
                 break;
@@ -135,7 +138,7 @@ int menu2(){
     cout<<"\n 1 - Incluir";
     cout<<"\n 2 - Excluir";
     cout<<"\n 3 - Alterar";
-    cout<<"\n 4 - Consultar";
+    cout<<"\n 4 - Listar";
     cout<<"\n 5 - Voltar ao menu anterior\n\n";
 
     cin>>opcao;
@@ -197,8 +200,8 @@ void excluirElemento(TLista *lista){
                     break;
                 }
                 else{
-                    if (atual == lista->fim){
-                        lista->fim = anterior;
+                    if (atual == lista->prox){
+                        lista->prox = anterior;
                     }
 
                     //refazendo o encadeamento
@@ -255,6 +258,8 @@ int inserirProduto(TLista2 *lista2){
     cin >>novo->cod;
     cout << "Informe o nome: ";
     cin >>novo->nome;
+    cout << "Informe o Preco: ";
+    cin >>novo->preco;
 
     system("cls");
     novo->prox = NULL;
@@ -327,4 +332,28 @@ void consultarProduto(TLista2 *lista2){
             aux = aux->prox;
         }
     }
+}
+
+
+/* VENDER */ 
+int VenderProduto(TLista2 *lista2){
+	int cod, quant, valorT;
+	
+	cout << "Informe o codigo do cliente: ";
+	cin>>cod;
+	
+	cout << "O client e: X?";
+	
+	cout << "Informe o codigo do produto: ";
+	cin>>cod;
+	
+	cout << "Nome do procuto: X"; 
+	
+	cout <<"Quantidade ?";
+	cin >> quant;
+	
+	//valorT = quant * novo->preco;
+	
+	return valorT;
+	
 }
