@@ -1,359 +1,218 @@
 #include <iostream>
 #include <stdlib.h>
-#include <conio.h>
-#include <string.h>
 
 using namespace std;
 
-typedef struct Elemento{
-    string nome;
+struct Cliente{
     int cod;
-    float preco;
-    struct Elemento *prox;
-}TElemento;
+    string nome;
+    Cliente *prox;
+};
 
-typedef struct Lista{
-    TElemento *inicio;
-    TElemento *fim;
-    TElemento *prox;
-}TLista;
+struct Produto{
+    int cod;
+    string nome;
+    Produto *prox;
+};
 
-typedef struct Lista2{
-    TElemento *inicio;
-    TElemento *fim;
-}TLista2;
-
-/* Prototipando funcoes */
-int menu();
-int menu2();
-
-void inicializaLista(TLista *lista);
-int inserirElemento(TLista *lista);
-void excluirElemento(TLista *lista);
-void consultarElementos(TLista *lista);
-
-void inicializaProduto(TLista2 *lista2);
-int inserirProduto(TLista2 *lista2);
-void excluirProduto(TLista2 *lista2);
-void consultarProduto(TLista2 *lista2);
-
-int VenderProduto(TLista2 *lista2);
-
-int main(){
-    int opcao;
-    int opc;
-    TLista l1;
-    TLista2 l2;
-
-    inicializaLista(&l1);
-    inicializaProduto(&l2);
-
-    do {
-
-    //chamando menu
-    opcao = menu();
-
-        switch (opcao){
-            //cliente      
-            
-            case 1: 
-				opc = menu2();            
-
-                //inserir cliente
-                if (opc == 1){
-                    inserirElemento(&l1);                	
-                	break;
-                }
-                //exluir cliente
-                if (opc == 2){
-                    excluirElemento(&l1);
-                }
-                //alterar cliente
-                if (opc == 3){
-                    //alterar elemento
-                }
-                //consultar cliente
-                if (opc == 4){
-                    consultarElementos(&l1);
-                }
-                //voltar ao menu anterior
-                if (opc == 5){
-                    menu();
-                }
-            break;
-
-            //produto
-            case 2: 
-				opc = menu2();            
-
-                //inserir produto
-                if (opc == 1){
-                    inserirProduto(&l2);
-                }
-                if (opc == 2){
-                    excluirProduto(&l2);
-                }
-                if (opc == 3){
-                    //alterar produto
-                }
-                if (opc == 4){
-                    consultarProduto(&l2);
-                }
-                if (opc == 5){
-                    menu();
-                }
-            break;
-
-            //vender
-            case 3:
-            	VenderProduto(&l2);                
-            //calcular total
-            case 4:
-                break;
-        };
-    }while(opcao!=0);
-
-    return 0;
-}
 
 int menu(){
-    int opcao;
-
-    cout<<"Escolha uma opcao do menu: \n\n";
-    cout<<"\n 1 - Cliente";
-    cout<<"\n 2 - Produto";
-    cout<<"\n 3 - Vender";
-    cout<<"\n 4 - Calcular Total";
-    cout<<"\n 0 - Fechar Programa\n\n";
-
-    cin>>opcao;
-
-    return opcao;
-}
-
-int menu2(){
     int opcao;
 
     cout<<"Escolha uma opcao do menu: \n\n";
     cout<<"\n 1 - Incluir";
     cout<<"\n 2 - Excluir";
     cout<<"\n 3 - Alterar";
-    cout<<"\n 4 - Listar";
-    cout<<"\n 5 - Voltar ao menu anterior\n\n";
+    cout<<"\n 4 - Consultar";
+    cout<<"\n 5 - Listar cadastros";
+    cout<<"\n 6 - Voltar ao menu anterior\n\n";
 
     cin>>opcao;
 
     return opcao;
 }
 
-/* Inicializar Lista */
+int menu_princ(){
+    int opcao2;
 
-void inicializaLista(TLista *lista){
-    lista->inicio = NULL;
-    lista->fim = NULL;
+    cout<<"Escolha uma opcao do menu: \n\n";
+    cout<<"\n 1 - Cliente";
+    cout<<"\n 2 - Produto";
+    cout<<"\n 3 - Vender";
+    cout<<"\n 4 - Calcular total de vendas";
+    cout<<"\n 5 - Sair \n\n";
+
+    cin>>opcao2;
+
+    return opcao2;
 }
 
-/* inserir Elemento na lista */
 
-int inserirElemento(TLista *lista){
+
+int main(){
+
+    Cliente *inicio=NULL, *tmp, *valor;
+    int opcao, opcao2,teste;
+
+    opcao2 = menu_princ();
+
+    while (1){
+
+    //CLIENTE
+    if (opcao2 ==1){
     system("cls");
-    TElemento *novo;
-    novo = new TElemento;
+    opcao = menu();
 
-    cout << "Inserir codigo: ";
-    cin >>novo->cod;
-    cout << "Informe o nome: ";
-    cin >>novo->nome;
+    //INSERIR CLIENTE
+    if (opcao == 1){
+        system("cls");
+        Cliente *novo;
+        novo = new Cliente;
+        cout<<"Digite o codigo: ";
+        cin>>novo->cod;
+        cout<<"Digite o nome: ";
+        cin>>novo->nome;
+        tmp = novo;
+        tmp->prox = NULL;
 
-    system("cls");
-    novo->prox = NULL;
+        if (inicio == NULL){
+            inicio = tmp;
+            valor = inicio;
+        }
 
-    if (lista->inicio == NULL){
-        lista->inicio = novo;
-        lista->fim = novo;
-    }else{
-        lista->fim->prox = novo; //encadeamento da lista
-        lista->fim = novo;
-    }
-}
+        else {
+            valor->prox = tmp;
+            valor = tmp;
+             }
+    }//fim if
 
-/* Excluir elemento da lista */
+    //EXCLUIR CLIENTE
+    if (opcao == 2){
+        system("cls");
+        Cliente *anterior, *atual;
+        if (inicio == NULL){
+            cout<<"Lista vazia"<<endl;
+        }
+        else{
+            int num;
+            cout<<"Digite o codigo que deseja excluir: ";
+            cin>>num;
+            anterior = inicio;
+            atual = inicio;
 
-void excluirElemento(TLista *lista){
-    system("cls");
-    int valor;
-    TElemento *anterior, *atual;
-
-    cout << "Informe elemento a ser excluido: ";
-    cin >> valor;
-
-    if (lista->inicio == NULL){
-        cout << "Lista Vazia!\n\n";
-    }else{
-        anterior = lista->inicio;
-        atual = lista->inicio;
-        while (atual!= NULL){
-            if (atual->cod == valor){
-                if (atual == lista->inicio){
-                    lista->inicio = lista->inicio->prox;
-                    free(atual);
-                    break;
-                }
-                else{
-                    if (atual == lista->prox){
-                        lista->prox = anterior;
-                    }
-
-                    //refazendo o encadeamento
-                    anterior->prox = atual->prox;
-                    free(atual);
-                    break;
-                }
-            }
-            else{
+        if(inicio->cod == num){
+            atual = atual->prox;
+            inicio = atual;
+        } // fim if
+        else {
+        while (1){
+            if (atual->cod == num){
+                anterior->prox = atual->prox;
+                break;
+            } //fim if
+            else {
                 anterior = atual;
                 atual = atual->prox;
-            }
-        }//fim while
-    }
-}
+            } //fim else
 
-/* Consultar Lista */
+        } //fim while
+        } // fim else
 
-void consultarElementos(TLista *lista){
-    system("cls");
-    TElemento *aux;
-    aux = lista->inicio;
+    } //fim else
+    } //fim if
 
-    if (aux == NULL){
-        cout << "\n\nLista Vazia";
-    }
-    else{
-        while (aux != NULL){
-            cout <<"Cod: "<<aux->cod<<endl;
-            cout <<"Nome: "<<aux->nome<<endl;
-
-            aux = aux->prox;
+    // ALTERAR CLIENTE
+    if (opcao == 3) {
+        Cliente *atual;
+        if (inicio == NULL){
+            cout<<"Lista vazia"<<endl;
         }
-    }
-}
-
-/* LISTA 2 */ 
-
-// iNICIALIZAR LISTA2
-
-void inicializaProduto(TLista2 *lista2){
-    lista2->inicio = NULL;
-    lista2->fim = NULL;
-}
-
-/* inserir Elemento na lista2 */
-
-int inserirProduto(TLista2 *lista2){
-    system("cls");
-    TElemento *novo;
-    novo = new TElemento;
-
-    cout << "Inserir codigo: ";
-    cin >>novo->cod;
-    cout << "Informe o nome: ";
-    cin >>novo->nome;
-    cout << "Informe o Preco: ";
-    cin >>novo->preco;
-
-    system("cls");
-    novo->prox = NULL;
-    
-    if (lista2->inicio == NULL){
-        lista2->inicio = novo;
-        lista2->fim = novo;
-    }else{
-        lista2->fim->prox = novo; //encadeamento da lista
-        lista2->fim = novo;
-    }
-}
-
-/* Excluir elemento da lista2 */
-
-void excluirProduto(TLista2 *lista2){
-    system("cls");
-    int valor;
-    TElemento *anterior, *atual;
-
-    cout << "Informe elemento a ser excluido: ";
-    cin >> valor;
-
-    if (lista2->inicio == NULL){
-        cout << "Lista Vazia!\n\n";
-    }else{
-        anterior = lista2->inicio;
-        atual = lista2->inicio;
-        while (atual!= NULL){
-            if (atual->cod == valor){
-                if (atual == lista2->inicio){
-                    lista2->inicio = lista2->inicio->prox;
-                    free(atual);
-                    break;
-                }
-                else{
-                    if (atual == lista2->fim){
-                        lista2->fim = anterior;
-                    }
-
-                    //refazendo o encadeamento
-                    anterior->prox = atual->prox;
-                    free(atual);
-                    break;
-                }
-            }
+        else{
+            int num;
+            cout<<"Digite o codigo que deseja alterar: ";
+            cin>>num;
+            atual = inicio;
+            if(inicio->cod == num){
+                cout<<"Digite o novo nome: ";
+                cin>>atual->nome;
+                inicio = atual;
+            } // fim if
+        else{
+        while (1){
+            if (atual->cod == num){
+                cout<<"Digite o novo nome: ";
+                cin>>atual->nome;
+                break;
+            } //fim if
             else{
-                anterior = atual;
                 atual = atual->prox;
-            }
-        }//fim while
-    }
-}
+            } //fim else
 
-/* Consultar Lista2 */
+        } //fim while
+        } // fim else
 
-void consultarProduto(TLista2 *lista2){
-    system("cls");
-    TElemento *aux;
-    aux = lista2->inicio;
+        } //fim else
+	} //fim if
 
-    if (aux == NULL){
-        cout << "\n\nLista Vazia";
-    }
-    else{
-        while (aux != NULL){
-            cout <<"Cod: "<<aux->cod<<endl;
-            cout <<"Nome: "<<aux->nome<<endl;
-
-            aux = aux->prox;
+	//CONSULTAR CLIENTE
+	if (opcao == 4){
+		Cliente *atual;
+        if (inicio == NULL){
+            cout<<"Lista vazia"<<endl;
         }
-    }
-}
+        else{
+            int num;
+            cout<<"Digite o codigo que deseja consultar: ";
+            cin>>num;
+            atual = inicio;
+            if(inicio->cod == num){
+                cout<<"\n"<<inicio->nome<<endl;
+            } // fim if
+        else {
+        while (1){
+            if (atual->cod == num){
+                cout<<"\n"<<atual->nome<<endl;
+                break;
+            } //fim if
+            else{
+                atual = atual->prox;
+            } //fim else
+
+        } //fim while
+        } // fim else
+
+    } //fim else
+	} // fim if
+		if (opcao == 5){
+            valor = inicio;
+            while (valor != NULL) {
+                cout<<"\nCodigo: "<<valor->cod<<endl;
+                cout<<"\nNome: "<<valor->nome<<endl;
+                valor = valor->prox;
+            }
+        } // fim if
+        if (opcao == 6){
+        	menu_princ();
+		}
+	} // fim if
+
+	if (opcao2 == 2){
+		// PRODUTO
+	}
+
+	if (opcao2 == 3){
+		// VENDER
+	}
+
+	if (opcao2 == 4){
+		//CALCULAR TOTAL
+	}
+
+	if (opcao2 == 5){
+		break;
+	}
+} //fim while
 
 
-/* VENDER */ 
-int VenderProduto(TLista2 *lista2){
-	int cod, quant, valorT;
-	
-	cout << "Informe o codigo do cliente: ";
-	cin>>cod;
-	
-	cout << "O client e: X?";
-	
-	cout << "Informe o codigo do produto: ";
-	cin>>cod;
-	
-	cout << "Nome do procuto: X"; 
-	
-	cout <<"Quantidade ?";
-	cin >> quant;
-	
-	//valorT = quant * novo->preco;
-	
-	return valorT;
-	
-}
+    return 0;
+} //fim main
