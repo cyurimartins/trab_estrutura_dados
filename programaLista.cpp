@@ -12,6 +12,8 @@ struct Cliente{
 struct Produto{
     int cod;
     string nome;
+    int quant;
+    float preco;
     Produto *prox;
 };
 
@@ -19,13 +21,12 @@ struct Produto{
 int menu(){
     int opcao;
 
-    cout<<"Escolha uma opcao do menu: \n\n";
+    cout<<"\n\nEscolha uma opcao do menu: \n\n";
     cout<<"\n 1 - Incluir";
     cout<<"\n 2 - Excluir";
     cout<<"\n 3 - Alterar";
-    cout<<"\n 4 - Consultar";
-    cout<<"\n 5 - Listar cadastros";
-    cout<<"\n 6 - Voltar ao menu anterior\n\n";
+    cout<<"\n 4 - Consultar cadastros";
+    cout<<"\n 5 - Voltar ao menu anterior\n\n";
 
     cin>>opcao;
 
@@ -47,48 +48,47 @@ int menu_princ(){
     return opcao2;
 }
 
-
-
 int main(){
 
-    Cliente *inicio=NULL, *tmp, *valor;
+    Cliente *inicio=NULL, *tmp, *valor, *consulta;
+    Produto *inicioPro=NULL, *tmpPro, *valorPro, *consultaprod;
+    int codCli = 1, codProd = 1;
     int opcao, opcao2,teste;
 
     opcao2 = menu_princ();
 
     while (1){
-
     //CLIENTE
     if (opcao2 ==1){
-    system("cls");
-    opcao = menu();
+    opcao = menu(); // CHAMANDO MENU 2
 
     //INSERIR CLIENTE
     if (opcao == 1){
-        system("cls");
         Cliente *novo;
         novo = new Cliente;
-        cout<<"Digite o codigo: ";
-        cin>>novo->cod;
+
+        novo->cod = codCli;
         cout<<"Digite o nome: ";
         cin>>novo->nome;
         tmp = novo;
+
         tmp->prox = NULL;
 
         if (inicio == NULL){
             inicio = tmp;
             valor = inicio;
         }
-
         else {
             valor->prox = tmp;
             valor = tmp;
              }
+
+             codCli++;
+
     }//fim if
 
     //EXCLUIR CLIENTE
     if (opcao == 2){
-        system("cls");
         Cliente *anterior, *atual;
         if (inicio == NULL){
             cout<<"Lista vazia"<<endl;
@@ -154,27 +154,82 @@ int main(){
         } //fim else
 	} //fim if
 
-	//CONSULTAR CLIENTE
-	if (opcao == 4){
-		Cliente *atual;
-        if (inicio == NULL){
+
+
+        // CONSULTAR CADASTROS
+		if (opcao == 4){
+            consulta = inicio;
+            while (consulta != NULL) {
+                cout<<"\nCodigo: "<<consulta->cod;
+                cout<<"\nNome: "<<consulta->nome<<endl;
+                consulta = consulta->prox;
+            }
+
+        } // fim if
+
+        if (opcao == 5){
+        	menu_princ();
+		}
+	} // fim if
+
+	if (opcao2 == 2){
+		// PRODUTO
+        opcao = menu();
+        // incluir cadastro de produto
+        if (opcao == 1){
+            Produto *novo;
+            novo = new Produto;
+
+            novo->cod = codProd;
+            cout<<"Digite o nome: ";
+            cin>>novo->nome;
+            cout<<"Digite quantidade: ";
+            cin>>novo->quant;
+            cout<<"Digite preco: ";
+            cin>>novo->preco;
+
+            tmpPro = novo;
+            tmpPro->prox = NULL;
+
+            if (inicioPro == NULL){
+            inicioPro = tmpPro;
+            valorPro = inicioPro;
+        }
+        else {
+            valorPro->prox = tmpPro;
+            valorPro = tmpPro;
+             }
+
+             codProd++;
+
+    }//fim if
+
+    // excluir cadastros de produtos
+
+    if (opcao == 2){
+        Produto *anterior, *atual;
+        if (inicioPro == NULL){
             cout<<"Lista vazia"<<endl;
         }
         else{
             int num;
-            cout<<"Digite o codigo que deseja consultar: ";
+            cout<<"Digite o codigo que deseja excluir: ";
             cin>>num;
-            atual = inicio;
-            if(inicio->cod == num){
-                cout<<"\n"<<inicio->nome<<endl;
-            } // fim if
+            anterior = inicioPro;
+            atual = inicioPro;
+
+        if(inicioPro->cod == num){
+            atual = atual->prox;
+            inicioPro = atual;
+        } // fim if
         else {
         while (1){
             if (atual->cod == num){
-                cout<<"\n"<<atual->nome<<endl;
+                anterior->prox = atual->prox;
                 break;
             } //fim if
-            else{
+            else {
+                anterior = atual;
                 atual = atual->prox;
             } //fim else
 
@@ -182,22 +237,65 @@ int main(){
         } // fim else
 
     } //fim else
-	} // fim if
-		if (opcao == 5){
-            valor = inicio;
-            while (valor != NULL) {
-                cout<<"\nCodigo: "<<valor->cod<<endl;
-                cout<<"\nNome: "<<valor->nome<<endl;
-                valor = valor->prox;
-            }
-        } // fim if
-        if (opcao == 6){
-        	menu_princ();
-		}
-	} // fim if
+    } //fim if
 
-	if (opcao2 == 2){
-		// PRODUTO
+    // alterar cadastros de produto
+    if (opcao == 3) {
+    	Produto *atual;
+        if (inicioPro == NULL){
+            cout<<"Lista vazia"<<endl;
+        }
+        else{
+        int num;
+        cout<<"Digite o codigo que deseja alterar: ";
+        cin>>num;
+        atual = inicioPro;
+        if(inicioPro->cod == num){
+        				cout<<"\nDigite o novo nome: ";
+        				cin>>atual->nome;
+        				cout<<"\nDigite o preço: ";
+        				cin>>atual->preco;
+        				cout<<"\nDigite a quantidade: ";
+        				cin>>atual->quant;
+                    } // fim if
+        else {
+        while (1){
+                if (atual->cod == num){
+        				cout<<"\nDigite o novo nome: ";
+        				cin>>atual->nome;
+        				cout<<"\nDigite o preco: ";
+        				cin>>atual->preco;
+        				cout<<"\nDigite a quantidade: ";
+        				cin>>atual->quant;
+                        break;
+                } //fim if
+                else {
+                    atual = atual->prox;
+                    } //fim else
+
+        } //fim while
+        } // fim else
+
+    } //fim else
+	} //fim if
+
+    // Consultar Cadastros
+    if (opcao == 4){
+            consultaprod = inicioPro;
+            while (consultaprod != NULL){
+                cout<<"\n\nCodigo: "<<consultaprod->cod;
+                cout<<"\nNome: "<<consultaprod->nome;
+                cout<<"\nQuantidade: "<<consultaprod->quant;
+                cout<<"\nPreco: "<<consultaprod->preco;
+
+                consultaprod = consultaprod->prox;
+            }
+    }
+
+    if (opcao == 5){
+            menu_princ();
+		}
+
 	}
 
 	if (opcao2 == 3){
